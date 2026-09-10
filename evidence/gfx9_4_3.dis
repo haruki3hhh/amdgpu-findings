@@ -1,0 +1,791 @@
+	s_branch 1
+	s_branch 780
+	s_getreg_b32 ttmp12, hwreg(HW_REG_STATUS)
+	s_andn2_b32 ttmp12, ttmp12, 0x20006
+	s_getreg_b32 ttmp15, hwreg(HW_REG_TRAPSTS)
+	s_and_b32 ttmp2, ttmp15, 0x4000400
+	s_cmp_eq_u32 ttmp2, 0x4000400
+	s_cbranch_scc0 3
+	s_bitset0_b32 ttmp15, 26
+	s_setreg_imm32_b32 hwreg(HW_REG_TRAPSTS, 26, 1), 0
+	s_bitcmp0_b32 ttmp15, 10
+	s_cbranch_scc1 7
+	s_bitcmp0_b32 ttmp1, 24
+	s_cbranch_scc1 5
+	s_bitset0_b32 ttmp15, 22
+	s_setreg_imm32_b32 hwreg(HW_REG_TRAPSTS, 22, 1), 0
+	s_andn2_b32 ttmp1, ttmp1, 0x1ff0000
+	s_and_b32 ttmp2, ttmp12, 0x2000
+	s_cbranch_scc0 10
+	s_bitcmp1_b32 ttmp1, 24
+	s_cbranch_scc1 35
+	s_bitcmp1_b32 ttmp15, 26
+	s_cbranch_scc1 33
+	s_and_b32 ttmp2, ttmp15, 0x400
+	s_cbranch_scc1 111
+	s_sleep 16
+	s_getreg_b32 ttmp15, hwreg(HW_REG_TRAPSTS)
+	s_branch 65530
+	s_and_b32 ttmp2, ttmp15, 0x3800900
+	s_cbranch_scc1 23
+	s_and_b32 ttmp2, ttmp15, 0x71ff
+	s_cbranch_scc0 8
+	s_and_b32 ttmp3, ttmp15, 0x7080
+	s_cbranch_scc0 1
+	s_bitset1_b32 ttmp2, 7
+	s_getreg_b32 ttmp3, hwreg(HW_REG_MODE)
+	s_lshl_b32 ttmp2, ttmp2, 12
+	s_and_b32 ttmp2, ttmp2, ttmp3
+	s_cbranch_scc1 12
+	s_bitcmp1_b32 ttmp1, 24
+	s_cbranch_scc1 3
+	s_and_b32 ttmp2, ttmp1, 0xff0000
+	s_cbranch_scc1 7
+	s_bitcmp1_b32 ttmp1, 24
+	s_cbranch_scc1 6
+	s_bitcmp1_b32 ttmp15, 26
+	s_cbranch_scc1 4
+	s_and_b32 ttmp2, ttmp15, 0x400
+	s_cbranch_scc1 82
+	s_bitset1_b32 ttmp1, 29
+	s_getreg_b32 ttmp14, hwreg(HW_REG_IB_STS)
+	s_and_b32 ttmp14, ttmp14, 0x1f8000
+	s_lshl_b32 ttmp14, ttmp14, 11
+	s_andn2_b32 ttmp13, ttmp13, 0xfc000000
+	s_or_b32 ttmp13, ttmp13, ttmp14
+	s_setreg_imm32_b32 hwreg(HW_REG_IB_STS), 0
+	s_getreg_b32 ttmp14, hwreg(HW_REG_TMA_LO)
+	s_getreg_b32 ttmp15, hwreg(HW_REG_TMA_HI)
+	s_lshl_b64 ttmp[14:15], ttmp[14:15], 8
+	s_bitcmp1_b32 ttmp15, 15
+	s_cbranch_scc0 2
+	s_or_b32 ttmp15, ttmp15, 0xffff0000
+	s_load_dword ttmp7, ttmp[14:15], 0x10 glc
+	s_load_dwordx2 ttmp[2:3], ttmp[14:15], 0x0 glc
+	s_load_dwordx2 ttmp[14:15], ttmp[14:15], 0x8 glc
+	s_waitcnt lgkmcnt(0)
+	s_lshl_b32 ttmp7, ttmp7, 23
+	s_andn2_b32 ttmp13, ttmp13, 0x3800000
+	s_or_b32 ttmp13, ttmp13, ttmp7
+	s_bitcmp1_b32 ttmp1, 24
+	s_cbranch_scc0 8
+	s_bitcmp1_b32 ttmp13, 24
+	s_cbranch_scc0 2
+	s_bitset1_b32 ttmp1, 29
+	s_branch 4
+	s_andn2_b32 ttmp1, ttmp1, 0x1ff0000
+	s_setreg_imm32_b32 hwreg(HW_REG_TRAPSTS, 22, 1), 0
+	s_getreg_b32 ttmp7, hwreg(HW_REG_TRAPSTS)
+	s_bitcmp1_b32 ttmp7, 26
+	s_cbranch_scc0 6
+	s_bitcmp1_b32 ttmp13, 25
+	s_cbranch_scc0 2
+	s_bitset1_b32 ttmp1, 29
+	s_branch 2
+	s_setreg_imm32_b32 hwreg(HW_REG_TRAPSTS, 26, 1), 0
+	s_bitcmp1_b32 ttmp1, 29
+	s_bitset0_b32 ttmp1, 29
+	s_cbranch_scc0 19
+	s_bitset0_b32 ttmp13, 24
+	s_bitset0_b32 ttmp13, 25
+	s_bitset0_b32 ttmp1, 29
+	s_and_b64 ttmp[2:3], ttmp[2:3], ttmp[2:3]
+	s_cbranch_scc0 1
+	s_setpc_b64 ttmp[2:3]
+	s_and_b32 ttmp2, ttmp1, 0x1ff0000
+	s_cbranch_scc1 5
+	s_or_b32 ttmp12, ttmp12, 0x2000
+	s_sub_u32 ttmp0, ttmp0, 8
+	s_subb_u32 ttmp1, ttmp1, 0
+	s_branch 5
+	s_and_b32 ttmp2, ttmp1, 0x1000000
+	s_cbranch_scc1 2
+	s_add_u32 ttmp0, ttmp0, 4
+	s_addc_u32 ttmp1, ttmp1, 0
+	s_and_b32 ttmp1, ttmp1, 0xffff
+	s_lshr_b32 ttmp14, ttmp13, 11
+	s_and_b32 ttmp14, ttmp14, 0x1f8000
+	s_setreg_b32 hwreg(HW_REG_IB_STS), ttmp14
+	s_and_b64 exec, exec, exec
+	s_and_b64 vcc, vcc, vcc
+	s_lshr_b32 ttmp2, ttmp12, 3
+	s_setreg_b32 hwreg(HW_REG_STATUS, 3, 29), ttmp2
+	s_nop 2
+	s_setreg_b32 hwreg(HW_REG_STATUS, 0, 1), ttmp12
+	s_rfe_b64 ttmp[0:1]
+	s_and_b32 ttmp1, ttmp1, 0xffff
+	s_mov_b32 ttmp14, 0
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 10, 1), ttmp14
+	s_getreg_b32 ttmp14, hwreg(HW_REG_IB_STS)
+	s_and_b32 ttmp14, ttmp14, 0x1f8000
+	s_lshl_b32 ttmp14, ttmp14, 11
+	s_andn2_b32 ttmp13, ttmp13, 0xfc000000
+	s_or_b32 ttmp13, ttmp13, ttmp14
+	s_setreg_imm32_b32 hwreg(HW_REG_IB_STS), 0
+	s_mov_b32 ttmp2, exec_lo
+	s_mov_b32 ttmp3, exec_hi
+	s_mov_b64 exec, 0
+	s_sendmsg sendmsg(MSG_SAVEWAVE)
+	s_or_b32 ttmp14, ttmp12, 4
+	s_setreg_b32 hwreg(HW_REG_STATUS), ttmp14
+	s_sleep 2
+	s_cbranch_execz 65534
+	s_getreg_b32 ttmp14, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp14, ttmp14, 1
+	s_lshl_b32 ttmp14, ttmp14, 10
+	s_lshl_b32 ttmp14, ttmp14, 1
+	s_getreg_b32 ttmp15, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp15, ttmp15, 1
+	s_lshl_b32 ttmp15, ttmp15, 6
+	s_add_u32 ttmp14, ttmp14, ttmp15
+	s_add_u32 ttmp14, ttmp14, exec_lo
+	s_addc_u32 ttmp15, exec_hi, 0
+	s_and_b32 ttmp15, ttmp15, 0xffff
+	s_store_dwordx4 ttmp[4:7], ttmp[14:15], 0x50 glc
+	s_waitcnt lgkmcnt(0)
+	s_store_dwordx4 ttmp[8:11], ttmp[14:15], 0x60 glc
+	s_waitcnt lgkmcnt(0)
+	s_store_dword ttmp13, ttmp[14:15], 0x74 glc
+	s_waitcnt lgkmcnt(0)
+	s_mov_b32 ttmp8, exec_lo
+	s_and_b32 ttmp9, exec_hi, 0xffff
+	s_or_b32 ttmp9, ttmp9, 0x40000
+	s_mov_b32 ttmp10, 0
+	s_mov_b32 ttmp11, 0x807fac
+	s_mov_b32 ttmp5, m0
+	s_mov_b32 ttmp4, 0
+	s_getreg_b32 ttmp4, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp4, ttmp4, 1
+	s_lshl_b32 ttmp4, ttmp4, 10
+	s_lshl_b32 ttmp4, ttmp4, 1
+	s_getreg_b32 ttmp14, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp14, ttmp14, 1
+	s_lshl_b32 ttmp14, ttmp14, 6
+	s_add_u32 ttmp4, ttmp4, ttmp14
+	s_mov_b32 ttmp10, 4
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp5, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp0, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp1, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp2, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp3, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp12, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_getreg_b32 ttmp15, hwreg(HW_REG_TRAPSTS)
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp15, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword xnack_mask_lo, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword xnack_mask_hi, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_getreg_b32 ttmp5, hwreg(HW_REG_MODE)
+	s_mov_b32 exec_lo, m0
+	s_mov_b32 m0, ttmp4
+	s_buffer_store_dword ttmp5, ttmp[8:11], m0 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 4
+	s_mov_b32 m0, exec_lo
+	s_setvskip 0, 0
+	s_and_b32 ttmp14, exec_hi, 0x4000000
+	s_mov_b32 ttmp3, 0
+	s_or_b32 ttmp3, ttmp14, ttmp3
+	s_getreg_b32 ttmp4, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp4, ttmp4, 1
+	s_lshl_b32 ttmp4, ttmp4, 10
+	s_lshl_b32 ttmp4, ttmp4, 1
+	s_getreg_b32 ttmp15, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp15, ttmp15, 1
+	s_lshl_b32 ttmp15, ttmp15, 4
+	s_lshl_b32 ttmp10, ttmp15, 2
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b64 ttmp[6:7], ttmp[8:9]
+	s_add_u32 ttmp8, ttmp8, ttmp4
+	s_addc_u32 ttmp9, ttmp9, 0
+	s_mov_b32 m0, 0
+	s_nop 0
+	s_movrels_b64 s[0:1], s[0:1]
+	s_movrels_b64 s[2:3], s[2:3]
+	s_movrels_b64 s[4:5], s[4:5]
+	s_movrels_b64 s[6:7], s[6:7]
+	s_movrels_b64 s[8:9], s[8:9]
+	s_movrels_b64 s[10:11], s[10:11]
+	s_movrels_b64 s[12:13], s[12:13]
+	s_movrels_b64 s[14:15], s[14:15]
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], 0x0 glc
+	s_waitcnt lgkmcnt(0)
+	s_buffer_store_dwordx4 s[4:7], ttmp[8:11], 0x10 glc
+	s_waitcnt lgkmcnt(0)
+	s_buffer_store_dwordx4 s[8:11], ttmp[8:11], 0x20 glc
+	s_waitcnt lgkmcnt(0)
+	s_buffer_store_dwordx4 s[12:15], ttmp[8:11], 0x30 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp8, ttmp8, 64
+	s_addc_u32 ttmp9, ttmp9, 0
+	s_add_u32 m0, m0, 16
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65511
+	s_mov_b64 ttmp[8:9], ttmp[6:7]
+	s_mov_b32 ttmp4, 0
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, -1
+	s_mov_b32 xnack_mask_lo, 0
+	s_mov_b32 xnack_mask_hi, 0
+	s_mov_b32 ttmp10, 0x1000000
+	s_and_b32 ttmp14, ttmp12, 0x400000
+	s_cbranch_scc1 3
+	s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
+	s_andn2_b32 ttmp14, 0x10000000, ttmp14
+	s_cbranch_scc1 77
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v0, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v1, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v2, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v3, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_branch 8
+	buffer_store_dword v0, off, ttmp[8:11], ttmp4 sc0 nt
+	buffer_store_dword v1, off, ttmp[8:11], ttmp4 offset:256 sc0 nt
+	buffer_store_dword v2, off, ttmp[8:11], ttmp4 offset:512 sc0 nt
+	buffer_store_dword v3, off, ttmp[8:11], ttmp4 offset:768 sc0 nt
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp15, hwreg(HW_REG_LDS_ALLOC, 12, 9)
+	s_and_b32 ttmp15, ttmp15, -1
+	s_cbranch_scc0 100
+	s_barrier
+	s_and_b32 ttmp14, ttmp3, 0x4000000
+	s_cbranch_scc0 96
+	s_lshl_b32 ttmp15, ttmp15, 6
+	s_lshl_b32 ttmp15, ttmp15, 2
+	s_mov_b32 ttmp10, ttmp15
+	s_getreg_b32 ttmp4, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp4, ttmp4, 1
+	s_lshl_b32 ttmp4, ttmp4, 10
+	s_lshl_b32 ttmp4, ttmp4, 1
+	s_getreg_b32 ttmp14, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp14, ttmp14, 1
+	s_lshl_b32 ttmp14, ttmp14, 6
+	s_add_u32 ttmp4, ttmp4, ttmp14
+	s_add_u32 ttmp4, ttmp4, 0x80
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, 0
+	v_mbcnt_lo_u32_b32 v2, -1, 0
+	v_mbcnt_hi_u32_b32 v3, -1, v2
+	s_and_b32 ttmp14, ttmp12, 0x400000
+	s_cbranch_scc1 3
+	s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
+	s_andn2_b32 ttmp14, 0x10000000, ttmp14
+	s_cbranch_scc1 48
+	v_lshlrev_b32_e32 v2, 2, v3
+	ds_read2_b32 v[0:1], v2 offset1:64
+	s_waitcnt lgkmcnt(0)
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v0, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v1, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	v_add_u32_e32 v2, 0x200, v2
+	v_cmp_lt_u32_e64 vcc, v2, ttmp15
+	s_cbranch_vccnz 65490
+	s_branch 21
+	v_mul_i32_i24_e64 v2, v3, 8
+	v_mov_b32_e32 v3, 0x200
+	s_mov_b32 m0, 0x10000
+	s_mov_b32 s0, ttmp11
+	s_and_b32 ttmp11, ttmp11, 0xff7fffff
+	s_or_b32 ttmp11, ttmp11, 0x58000
+	ds_read_b64 v[0:1], v2
+	s_waitcnt lgkmcnt(0)
+	buffer_store_dwordx2 v[0:1], v2, ttmp[8:11], ttmp4 offen sc0 nt
+	v_add_u32_e32 v2, v2, v3
+	v_cmp_lt_u32_e64 vcc, v2, ttmp15
+	s_cbranch_vccnz 65527
+	s_mov_b32 ttmp11, s0
+	s_mov_b32 ttmp4, 0x400
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp15, hwreg(HW_REG_GPR_ALLOC, 12, 6)
+	s_add_u32 ttmp15, ttmp15, 1
+	s_lshl_b32 ttmp15, ttmp15, 2
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, 4
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc0 109
+	s_set_gpr_idx_on m0, gpr_idx(SRC0)
+	s_add_u32 ttmp15, ttmp15, 0x1000
+	s_and_b32 ttmp14, ttmp12, 0x400000
+	s_cbranch_scc1 3
+	s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
+	s_andn2_b32 ttmp14, 0x10000000, ttmp14
+	s_cbranch_scc1 81
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v0, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v1, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v2, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v3, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_add_u32 m0, m0, 4
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65457
+	s_set_gpr_idx_off
+	s_branch 18
+	v_mov_b32_e32 v0, v0
+	v_mov_b32_e32 v1, v1
+	v_mov_b32_e32 v2, v2
+	v_mov_b32_e32 v3, v3
+	buffer_store_dword v0, off, ttmp[8:11], ttmp4 sc0 nt
+	buffer_store_dword v1, off, ttmp[8:11], ttmp4 offset:256 sc0 nt
+	buffer_store_dword v2, off, ttmp[8:11], ttmp4 offset:512 sc0 nt
+	buffer_store_dword v3, off, ttmp[8:11], ttmp4 offset:768 sc0 nt
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp4, ttmp4, 0x400
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65519
+	s_set_gpr_idx_off
+	s_getreg_b32 ttmp15, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp15, ttmp15, 1
+	s_lshl_b32 ttmp15, ttmp15, 3
+	s_getreg_b32 ttmp14, hwreg(HW_REG_GPR_ALLOC, 12, 6)
+	s_add_u32 ttmp14, ttmp14, 1
+	s_lshl_b32 ttmp14, ttmp14, 2
+	s_sub_u32 ttmp15, ttmp15, ttmp14
+	s_and_b32 ttmp15, ttmp15, ttmp15
+	s_cbranch_scc0 122
+	s_add_u32 ttmp15, ttmp15, 0x1000
+	s_mov_b32 m0, 0
+	s_set_gpr_idx_on m0, gpr_idx(SRC0)
+	s_and_b32 ttmp14, ttmp12, 0x400000
+	s_cbranch_scc1 3
+	s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
+	s_andn2_b32 ttmp14, 0x10000000, ttmp14
+	s_cbranch_scc1 89
+	v_accvgpr_read_b32 v0, a0
+	v_accvgpr_read_b32 v1, a1
+	v_accvgpr_read_b32 v2, a2
+	v_accvgpr_read_b32 v3, a3
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v0, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v0, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v1, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v1, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v2, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v2, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_mov_b32 s4, 0
+	v_readlane_b32 s0, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s1, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s2, v3, s4
+	s_add_u32 s4, s4, 1
+	v_readlane_b32 s3, v3, s4
+	s_add_u32 s4, s4, 1
+	s_buffer_store_dwordx4 s[0:3], ttmp[8:11], ttmp4 glc
+	s_waitcnt lgkmcnt(0)
+	s_add_u32 ttmp4, ttmp4, 16
+	s_cmp_eq_u32 s4, 64
+	s_cbranch_scc0 65518
+	s_add_u32 m0, m0, 4
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65449
+	s_set_gpr_idx_off
+	s_branch 22
+	v_accvgpr_read_b32 v0, a0
+	v_accvgpr_read_b32 v1, a1
+	v_accvgpr_read_b32 v2, a2
+	v_accvgpr_read_b32 v3, a3
+	buffer_store_dword v0, off, ttmp[8:11], ttmp4 sc0 nt
+	buffer_store_dword v1, off, ttmp[8:11], ttmp4 offset:256 sc0 nt
+	buffer_store_dword v2, off, ttmp[8:11], ttmp4 offset:512 sc0 nt
+	buffer_store_dword v3, off, ttmp[8:11], ttmp4 offset:768 sc0 nt
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp4, ttmp4, 0x400
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65515
+	s_set_gpr_idx_off
+	s_branch 238
+	s_mov_b32 ttmp8, exec_lo
+	s_and_b32 ttmp9, exec_hi, 0xffff
+	s_or_b32 ttmp9, ttmp9, 0x40000
+	s_mov_b32 ttmp10, 0
+	s_mov_b32 ttmp11, 0x807fac
+	s_and_b32 ttmp2, exec_hi, 0x4000000
+	s_cbranch_scc0 31
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp3, hwreg(HW_REG_LDS_ALLOC, 12, 9)
+	s_and_b32 ttmp3, ttmp3, -1
+	s_cbranch_scc0 26
+	s_lshl_b32 ttmp3, ttmp3, 6
+	s_lshl_b32 ttmp3, ttmp3, 2
+	s_mov_b32 ttmp10, ttmp3
+	s_getreg_b32 ttmp12, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp12, ttmp12, 1
+	s_lshl_b32 ttmp12, ttmp12, 10
+	s_lshl_b32 ttmp12, ttmp12, 1
+	s_getreg_b32 ttmp2, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp2, ttmp2, 1
+	s_lshl_b32 ttmp2, ttmp2, 6
+	s_add_u32 ttmp12, ttmp12, ttmp2
+	s_add_u32 ttmp12, ttmp12, 0x80
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, 0
+	buffer_load_dword off, ttmp[8:11], ttmp12 lds
+	buffer_load_dword off, ttmp[8:11], ttmp12 offset:256 lds
+	s_add_u32 m0, m0, 0x200
+	s_add_u32 ttmp12, ttmp12, 0x200
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65526
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, -1
+	s_mov_b32 ttmp10, 0x1000000
+	s_getreg_b32 ttmp3, hwreg(HW_REG_GPR_ALLOC, 12, 6)
+	s_add_u32 ttmp3, ttmp3, 1
+	s_lshl_b32 ttmp3, ttmp3, 2
+	s_add_u32 ttmp3, ttmp3, 0x8000
+	s_mov_b32 ttmp12, 0
+	s_mov_b32 ttmp2, ttmp12
+	s_add_u32 ttmp12, ttmp12, 0x400
+	s_mov_b32 m0, 4
+	s_set_gpr_idx_on m0, gpr_idx(DST)
+	buffer_load_dword v0, off, ttmp[8:11], ttmp12 sc0 nt
+	buffer_load_dword v1, off, ttmp[8:11], ttmp12 offset:256 sc0 nt
+	buffer_load_dword v2, off, ttmp[8:11], ttmp12 offset:512 sc0 nt
+	buffer_load_dword v3, off, ttmp[8:11], ttmp12 offset:768 sc0 nt
+	s_waitcnt vmcnt(0)
+	v_mov_b32_e32 v0, v0
+	v_mov_b32_e32 v1, v1
+	v_mov_b32_e32 v2, v2
+	v_mov_b32_e32 v3, v3
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp12, ttmp12, 0x400
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65518
+	s_getreg_b32 ttmp3, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp3, ttmp3, 1
+	s_lshl_b32 ttmp3, ttmp3, 3
+	s_getreg_b32 ttmp13, hwreg(HW_REG_GPR_ALLOC, 12, 6)
+	s_add_u32 ttmp13, ttmp13, 1
+	s_lshl_b32 ttmp13, ttmp13, 2
+	s_sub_u32 ttmp3, ttmp3, ttmp13
+	s_and_b32 ttmp3, ttmp3, ttmp3
+	s_cbranch_scc0 26
+	s_add_u32 ttmp3, ttmp3, 0x8000
+	s_mov_b32 m0, 0
+	s_set_gpr_idx_on m0, gpr_idx(DST)
+	buffer_load_dword v0, off, ttmp[8:11], ttmp12 sc0 nt
+	buffer_load_dword v1, off, ttmp[8:11], ttmp12 offset:256 sc0 nt
+	buffer_load_dword v2, off, ttmp[8:11], ttmp12 offset:512 sc0 nt
+	buffer_load_dword v3, off, ttmp[8:11], ttmp12 offset:768 sc0 nt
+	s_waitcnt vmcnt(0)
+	v_accvgpr_write_b32 a0, v0
+	v_accvgpr_write_b32 a1, v1
+	v_accvgpr_write_b32 a2, v2
+	v_accvgpr_write_b32 a3, v3
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp12, ttmp12, 0x400
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65514
+	s_set_gpr_idx_off
+	buffer_load_dword v0, off, ttmp[8:11], ttmp2 sc0 nt
+	buffer_load_dword v1, off, ttmp[8:11], ttmp2 offset:256 sc0 nt
+	buffer_load_dword v2, off, ttmp[8:11], ttmp2 offset:512 sc0 nt
+	buffer_load_dword v3, off, ttmp[8:11], ttmp2 offset:768 sc0 nt
+	s_waitcnt vmcnt(0)
+	s_getreg_b32 ttmp12, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp12, ttmp12, 1
+	s_lshl_b32 ttmp12, ttmp12, 10
+	s_lshl_b32 ttmp12, ttmp12, 1
+	s_getreg_b32 ttmp2, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp2, ttmp2, 1
+	s_lshl_b32 ttmp2, ttmp2, 6
+	s_add_u32 ttmp12, ttmp12, ttmp2
+	s_sub_u32 ttmp12, ttmp12, 64
+	s_getreg_b32 ttmp3, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp3, ttmp3, 1
+	s_lshl_b32 ttmp3, ttmp3, 4
+	s_lshl_b32 ttmp10, ttmp3, 2
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, ttmp3
+	s_buffer_load_dwordx16 s[0:15], ttmp[8:11], ttmp12 glc
+	s_sub_u32 ttmp12, ttmp12, 64
+	s_waitcnt lgkmcnt(0)
+	s_sub_u32 m0, m0, 16
+	s_nop 0
+	s_movreld_b64 s[0:1], s[0:1]
+	s_movreld_b64 s[2:3], s[2:3]
+	s_movreld_b64 s[4:5], s[4:5]
+	s_movreld_b64 s[6:7], s[6:7]
+	s_movreld_b64 s[8:9], s[8:9]
+	s_movreld_b64 s[10:11], s[10:11]
+	s_movreld_b64 s[12:13], s[12:13]
+	s_movreld_b64 s[14:15], s[14:15]
+	s_cmp_eq_u32 m0, 0
+	s_cbranch_scc0 65520
+	s_getreg_b32 ttmp12, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp12, ttmp12, 1
+	s_lshl_b32 ttmp12, ttmp12, 10
+	s_lshl_b32 ttmp12, ttmp12, 1
+	s_getreg_b32 ttmp2, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp2, ttmp2, 1
+	s_lshl_b32 ttmp2, ttmp2, 6
+	s_add_u32 ttmp12, ttmp12, ttmp2
+	s_mov_b32 ttmp10, 4
+	s_mov_b32 ttmp10, 0x1000000
+	s_buffer_load_dword ttmp3, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp0, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp1, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp4, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp5, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp14, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp15, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword xnack_mask_lo, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword xnack_mask_hi, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_dword ttmp7, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_waitcnt lgkmcnt(0)
+	s_mov_b32 m0, ttmp3
+	s_mov_b32 exec_lo, ttmp4
+	s_mov_b32 exec_hi, ttmp5
+	s_and_b32 ttmp3, 0x3ff, ttmp15
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 0, 10), ttmp3
+	s_and_b32 ttmp3, 0xfffff800, ttmp15
+	s_lshr_b32 ttmp3, ttmp3, 11
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 11, 21), ttmp3
+	s_setreg_b32 hwreg(HW_REG_MODE), ttmp7
+	s_getreg_b32 ttmp2, hwreg(HW_REG_GPR_ALLOC, 6, 6)
+	s_add_u32 ttmp2, ttmp2, 1
+	s_lshl_b32 ttmp2, ttmp2, 10
+	s_lshl_b32 ttmp2, ttmp2, 1
+	s_getreg_b32 ttmp3, hwreg(HW_REG_GPR_ALLOC, 24, 3)
+	s_add_u32 ttmp3, ttmp3, 1
+	s_lshl_b32 ttmp3, ttmp3, 6
+	s_add_u32 ttmp2, ttmp2, ttmp3
+	s_add_u32 ttmp2, ttmp2, ttmp8
+	s_addc_u32 ttmp3, ttmp9, 0
+	s_and_b32 ttmp3, ttmp3, 0xffff
+	s_load_dwordx4 ttmp[4:7], ttmp[2:3], 0x50 glc
+	s_load_dwordx4 ttmp[8:11], ttmp[2:3], 0x60 glc
+	s_load_dword ttmp13, ttmp[2:3], 0x74 glc
+	s_waitcnt lgkmcnt(0)
+	s_lshr_b32 ttmp2, ttmp13, 11
+	s_and_b32 ttmp2, ttmp2, 0x1f8000
+	s_setreg_b32 hwreg(HW_REG_IB_STS), ttmp2
+	s_and_b32 ttmp1, ttmp1, 0xffff
+	s_and_b64 exec, exec, exec
+	s_and_b64 vcc, vcc, vcc
+	s_lshr_b32 ttmp2, ttmp14, 3
+	s_setreg_b32 hwreg(HW_REG_STATUS, 3, 29), ttmp2
+	s_nop 2
+	s_setreg_b32 hwreg(HW_REG_STATUS, 0, 1), ttmp14
+	s_barrier
+	s_rfe_b64 ttmp[0:1]
+	s_endpgm_saved
+	v_cndmask_b32_e32 v0, s0, v0, vcc
