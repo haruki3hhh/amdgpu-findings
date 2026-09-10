@@ -1,0 +1,684 @@
+	s_branch 1
+	s_branch 551
+	s_version UC_VERSION_GFX11|UC_VERSION_W32_BIT
+	s_getreg_b32 ttmp12, hwreg(HW_REG_STATUS)
+	s_and_not1_b32 ttmp12, ttmp12, 0x20006
+	s_getreg_b32 ttmp15, hwreg(HW_REG_TRAPSTS)
+	s_bitcmp1_b32 ttmp1, 30
+	s_cbranch_scc0 1
+	s_barrier
+	s_bitcmp1_b32 ttmp1, 31
+	s_cbranch_scc1 6
+	s_and_b32 ttmp2, ttmp12, 0x2000
+	s_cbranch_scc0 9
+	s_and_b32 ttmp2, ttmp1, 0xff0000
+	s_cbranch_scc1 30
+	s_and_b32 ttmp2, ttmp15, 0x400
+	s_cbranch_scc1 69
+	s_sleep 16
+	s_getreg_b32 ttmp15, hwreg(HW_REG_TRAPSTS)
+	s_branch 65530
+	s_and_b32 ttmp2, ttmp15, 0x160900
+	s_cbranch_scc1 21
+	s_and_b32 ttmp2, ttmp15, 0x71ff
+	s_cbranch_scc0 8
+	s_and_b32 ttmp3, ttmp15, 0x7080
+	s_cbranch_scc0 1
+	s_bitset1_b32 ttmp2, 7
+	s_getreg_b32 ttmp3, hwreg(HW_REG_MODE)
+	s_lshl_b32 ttmp2, ttmp2, 12
+	s_and_b32 ttmp2, ttmp2, ttmp3
+	s_cbranch_scc1 10
+	s_and_b32 ttmp2, ttmp1, 0xff0000
+	s_cbranch_scc1 7
+	s_getreg_b32 ttmp2, hwreg(HW_REG_MODE)
+	s_and_b32 ttmp2, ttmp2, 0x800
+	s_cbranch_scc1 3
+	s_and_b32 ttmp2, ttmp15, 0x400
+	s_cbranch_scc1 42
+	s_sendmsg_rtn_b64 ttmp[14:15], sendmsg(MSG_RTN_GET_TMA)
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_lshl_b64 ttmp[14:15], ttmp[14:15], 8
+	s_bitcmp1_b32 ttmp15, 15
+	s_cbranch_scc0 2
+	s_or_b32 ttmp15, ttmp15, 0xffff0000
+	s_load_b32 ttmp2, ttmp[14:15], 0x10 glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_lshl_b32 ttmp2, ttmp2, 23
+	s_and_not1_b32 ttmp11, ttmp11, 0x800000
+	s_or_b32 ttmp11, ttmp11, ttmp2
+	s_load_b64 ttmp[2:3], ttmp[14:15], null glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_load_b64 ttmp[14:15], ttmp[14:15], 0x8 glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_and_b64 ttmp[2:3], ttmp[2:3], ttmp[2:3]
+	s_cbranch_scc0 1
+	s_setpc_b64 ttmp[2:3]
+	s_and_b32 ttmp2, ttmp1, 0xff0000
+	s_cbranch_scc1 8
+	s_and_b32 ttmp2, ttmp1, 0x1000000
+	s_cbranch_scc1 7
+	s_or_b32 ttmp12, ttmp12, 0x2000
+	s_sub_u32 ttmp0, ttmp0, 8
+	s_subb_u32 ttmp1, ttmp1, 0
+	s_branch 2
+	s_add_u32 ttmp0, ttmp0, 4
+	s_addc_u32 ttmp1, ttmp1, 0
+	s_and_b32 ttmp1, ttmp1, 0xffff
+	s_and_b64 exec, exec, exec
+	s_and_b64 vcc, vcc, vcc
+	s_setreg_b32 hwreg(HW_REG_STATUS), ttmp12
+	s_rfe_b64 ttmp[0:1]
+	s_bitcmp1_b32 ttmp12, 24
+	s_cbranch_scc0 1
+	s_endpgm
+	s_and_b32 ttmp1, ttmp1, 0xffff
+	s_mov_b32 ttmp14, 0
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 10, 1), ttmp14
+	s_mov_b32 ttmp2, exec_lo
+	s_mov_b32 ttmp3, exec_hi
+	s_mov_b64 exec, 0
+	s_sendmsg_rtn_b64 exec, sendmsg(MSG_RTN_SAVE_WAVE)
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_and_b32 ttmp14, exec_hi, 0x4000000
+	s_lshl_b32 ttmp14, ttmp14, 5
+	s_or_b32 ttmp1, ttmp1, ttmp14
+	s_mov_b32 ttmp14, exec_lo
+	s_and_b32 ttmp15, exec_hi, 0xffff
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, -1
+	global_store_addtid_b32 v0, ttmp[14:15] glc slc
+	v_mov_b32_e32 v0, 0
+	s_mov_b32 exec_lo, ttmp14
+	s_mov_b32 exec_hi, ttmp15
+	s_getreg_b32 ttmp15, hwreg(28, 11, 1)
+	s_lshl_b32 ttmp15, ttmp15, 25
+	s_getreg_b32 ttmp14, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp14, ttmp14, 1
+	s_bitcmp1_b32 ttmp15, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp14, ttmp14, 9
+	s_branch 1
+	s_lshl_b32 ttmp14, ttmp14, 10
+	s_getreg_b32 ttmp15, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp15, ttmp15, 10
+	s_add_u32 ttmp14, ttmp14, ttmp15
+	s_and_b32 ttmp15, exec_hi, 0xffff
+	s_add_u32 ttmp14, ttmp14, 0x200
+	s_add_u32 ttmp14, ttmp14, exec_lo
+	s_addc_u32 ttmp15, ttmp15, 0
+	v_writelane_b32 v0, ttmp4, 4
+	v_writelane_b32 v0, ttmp5, 5
+	v_writelane_b32 v0, ttmp6, 6
+	v_writelane_b32 v0, ttmp7, 7
+	v_writelane_b32 v0, ttmp8, 8
+	v_writelane_b32 v0, ttmp9, 9
+	v_writelane_b32 v0, ttmp10, 10
+	v_writelane_b32 v0, ttmp11, 11
+	v_writelane_b32 v0, ttmp13, 13
+	v_writelane_b32 v0, exec_lo, 14
+	v_writelane_b32 v0, exec_hi, 15
+	s_mov_b32 exec_lo, 0x3fff
+	s_mov_b32 exec_hi, 0
+	global_store_addtid_b32 v0, ttmp[14:15] offset:64 glc slc
+	v_readlane_b32 ttmp14, v0, 14
+	v_readlane_b32 ttmp15, v0, 15
+	s_mov_b32 exec_lo, ttmp14
+	s_mov_b32 exec_hi, ttmp15
+	s_mov_b32 ttmp8, exec_lo
+	s_and_b32 ttmp9, exec_hi, 0xffff
+	s_or_b32 ttmp9, ttmp9, 0x40000
+	s_mov_b32 ttmp10, 0
+	s_mov_b32 ttmp11, 0x10807fac
+	s_mov_b32 ttmp5, m0
+	s_mov_b32 ttmp4, 0
+	s_getreg_b32 ttmp7, hwreg(28, 11, 1)
+	s_lshl_b32 ttmp7, ttmp7, 25
+	s_mov_b32 exec_lo, -1
+	s_lshr_b32 m0, ttmp7, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 2
+	s_mov_b32 exec_hi, 0
+	s_branch 2
+	s_mov_b32 exec_hi, -1
+	s_branch 9
+	s_mov_b32 ttmp10, 0x1000000
+	buffer_store_b32 v1, off, ttmp[8:11], ttmp4 offset:128 glc slc
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 offset:256 glc slc
+	buffer_store_b32 v3, off, ttmp[8:11], ttmp4 offset:384 glc slc
+	s_branch 8
+	s_mov_b32 ttmp10, 0x1000000
+	buffer_store_b32 v1, off, ttmp[8:11], ttmp4 offset:256 glc slc
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 offset:512 glc slc
+	buffer_store_b32 v3, off, ttmp[8:11], ttmp4 offset:768 glc slc
+	s_getreg_b32 ttmp4, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp4, ttmp4, 1
+	s_bitcmp1_b32 ttmp7, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp4, ttmp4, 9
+	s_branch 1
+	s_lshl_b32 ttmp4, ttmp4, 10
+	s_getreg_b32 ttmp14, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp14, ttmp14, 10
+	s_add_u32 ttmp4, ttmp4, ttmp14
+	s_add_u32 ttmp4, ttmp4, 0x200
+	s_mov_b32 ttmp10, 0x1000000
+	v_mov_b32_e32 v0, 0
+	v_mov_b32_e32 v1, 0
+	v_mov_b32_e32 v2, 0
+	s_mov_b32 m0, 0
+	v_writelane_b32 v2, ttmp5, m0
+	s_add_u32 m0, m0, 1
+	v_writelane_b32 v2, ttmp0, m0
+	s_add_u32 m0, m0, 1
+	s_and_not1_b32 ttmp14, ttmp1, 0x80000000
+	v_writelane_b32 v2, ttmp14, m0
+	s_add_u32 m0, m0, 1
+	v_writelane_b32 v2, ttmp2, m0
+	s_add_u32 m0, m0, 1
+	v_writelane_b32 v2, ttmp3, m0
+	s_add_u32 m0, m0, 1
+	v_writelane_b32 v2, ttmp12, m0
+	s_add_u32 m0, m0, 1
+	s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
+	v_writelane_b32 v2, ttmp14, m0
+	s_add_u32 m0, m0, 1
+	v_writelane_b32 v2, ttmp15, m0
+	s_add_u32 m0, m0, 1
+	s_getreg_b32 ttmp5, hwreg(HW_REG_MODE)
+	v_writelane_b32 v2, ttmp5, m0
+	s_add_u32 m0, m0, 1
+	s_getreg_b32 ttmp5, hwreg(HW_REG_FLAT_SCR_LO)
+	v_writelane_b32 v2, ttmp5, m0
+	s_add_u32 m0, m0, 1
+	s_getreg_b32 ttmp5, hwreg(HW_REG_FLAT_SCR_HI)
+	v_writelane_b32 v2, ttmp5, m0
+	s_add_u32 m0, m0, 1
+	s_mov_b32 exec_lo, 0xffff
+	s_mov_b32 exec_hi, 0
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 glc slc
+	s_mov_b32 exec_lo, -1
+	s_getreg_b32 ttmp4, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp4, ttmp4, 1
+	s_bitcmp1_b32 ttmp7, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp4, ttmp4, 9
+	s_branch 1
+	s_lshl_b32 ttmp4, ttmp4, 10
+	s_getreg_b32 ttmp14, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp14, ttmp14, 10
+	s_add_u32 ttmp4, ttmp4, ttmp14
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 ttmp13, 0
+	s_mov_b32 m0, 0
+	s_nop 0
+	s_movrels_b64 s[0:1], s[0:1]
+	s_movrels_b64 s[2:3], s[2:3]
+	s_movrels_b64 s[4:5], s[4:5]
+	s_movrels_b64 s[6:7], s[6:7]
+	s_movrels_b64 s[8:9], s[8:9]
+	s_movrels_b64 s[10:11], s[10:11]
+	s_movrels_b64 s[12:13], s[12:13]
+	s_movrels_b64 s[14:15], s[14:15]
+	v_writelane_b32 v2, s0, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s1, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s2, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s3, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s4, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s5, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s6, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s7, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s8, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s9, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s10, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s11, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s12, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s13, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s14, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s15, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	s_cmp_eq_u32 ttmp13, 32
+	s_cbranch_scc0 6
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 glc slc
+	s_add_u32 ttmp4, ttmp4, 0x80
+	s_mov_b32 ttmp13, 0
+	v_mov_b32_e32 v2, 0
+	s_add_u32 m0, m0, 16
+	s_cmp_lt_u32 m0, 0x60
+	s_cbranch_scc1 65468
+	s_movrels_b64 s[0:1], s[0:1]
+	s_movrels_b64 s[2:3], s[2:3]
+	s_movrels_b64 s[4:5], s[4:5]
+	s_movrels_b64 s[6:7], s[6:7]
+	s_movrels_b64 s[8:9], s[8:9]
+	s_movrels_b64 s[10:11], s[10:11]
+	v_writelane_b32 v2, s0, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s1, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s2, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s3, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s4, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s5, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s6, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s7, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s8, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s9, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s10, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	v_writelane_b32 v2, s11, ttmp13
+	s_add_u32 ttmp13, ttmp13, 1
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 glc slc
+	s_mov_b32 exec_lo, -1
+	s_lshr_b32 m0, ttmp7, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 2
+	s_mov_b32 exec_hi, 0
+	s_branch 1
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp15, hwreg(HW_REG_LDS_ALLOC, 12, 9)
+	s_and_b32 ttmp15, ttmp15, -1
+	s_cbranch_scc0 67
+	s_barrier
+	s_and_b32 ttmp14, ttmp1, 0x80000000
+	s_cbranch_scc0 63
+	s_lshl_b32 ttmp15, ttmp15, 8
+	s_mov_b32 ttmp10, ttmp15
+	s_getreg_b32 ttmp4, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp4, ttmp4, 1
+	s_bitcmp1_b32 ttmp7, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp4, ttmp4, 9
+	s_branch 1
+	s_lshl_b32 ttmp4, ttmp4, 10
+	s_getreg_b32 ttmp14, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp14, ttmp14, 10
+	s_add_u32 ttmp4, ttmp4, ttmp14
+	s_add_u32 ttmp4, ttmp4, 0x200
+	s_add_u32 ttmp4, ttmp4, 0x80
+	s_mov_b32 ttmp10, 0x1000000
+	v_mbcnt_lo_u32_b32 v0, -1, 0
+	v_mbcnt_hi_u32_b32 v0, -1, v0
+	v_mul_u32_u24_e32 v0, 4, v0
+	s_lshr_b32 m0, ttmp7, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_mov_b32 m0, 0
+	s_cbranch_scc1 18
+	s_mov_b32 s3, 0x80
+	s_nop 0
+	s_nop 0
+	s_nop 0
+	ds_load_b32 v1, v0
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	buffer_store_b32 v1, off, ttmp[8:11], ttmp4 glc slc
+	s_add_u32 m0, m0, s3
+	s_add_u32 ttmp4, ttmp4, s3
+	v_add_nc_u32_e64 v0, v0, 0x80
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65524
+	s_branch 17
+	s_mov_b32 s3, 0x100
+	s_nop 0
+	s_nop 0
+	s_nop 0
+	ds_load_b32 v1, v0
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	buffer_store_b32 v1, off, ttmp[8:11], ttmp4 glc slc
+	s_add_u32 m0, m0, s3
+	s_add_u32 ttmp4, ttmp4, s3
+	v_add_nc_u32_e64 v0, v0, 0x100
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65524
+	s_mov_b32 exec_lo, -1
+	s_lshr_b32 m0, ttmp7, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 4
+	s_mov_b32 ttmp4, 0x200
+	s_mov_b32 exec_hi, 0
+	s_branch 3
+	s_mov_b32 ttmp4, 0x400
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp15, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp15, ttmp15, 1
+	s_lshl_b32 ttmp15, ttmp15, 2
+	s_lshr_b32 m0, ttmp7, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 23
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, 4
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc0 55
+	v_movrels_b32_e32 v0, v0
+	v_movrels_b32_e32 v1, v1
+	v_movrels_b32_e32 v2, v2
+	v_movrels_b32_e32 v3, v3
+	buffer_store_b32 v0, off, ttmp[8:11], ttmp4 glc slc
+	buffer_store_b32 v1, off, ttmp[8:11], ttmp4 offset:128 glc slc
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 offset:256 glc slc
+	buffer_store_b32 v3, off, ttmp[8:11], ttmp4 offset:384 glc slc
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp4, ttmp4, 0x200
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65519
+	s_branch 37
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, 4
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc0 17
+	v_movrels_b32_e32 v0, v0
+	v_movrels_b32_e32 v1, v1
+	v_movrels_b32_e32 v2, v2
+	v_movrels_b32_e32 v3, v3
+	buffer_store_b32 v0, off, ttmp[8:11], ttmp4 glc slc
+	buffer_store_b32 v1, off, ttmp[8:11], ttmp4 offset:256 glc slc
+	buffer_store_b32 v2, off, ttmp[8:11], ttmp4 offset:512 glc slc
+	buffer_store_b32 v3, off, ttmp[8:11], ttmp4 offset:768 glc slc
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp4, ttmp4, 0x400
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65519
+	s_getreg_b32 ttmp15, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_and_b32 ttmp15, ttmp15, -1
+	s_cbranch_scc0 12
+	s_lshl_b32 ttmp15, ttmp15, 3
+	s_add_u32 ttmp15, ttmp15, m0
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, 0
+	v_movrels_b32_e32 v0, v0
+	buffer_store_b32 v0, off, ttmp[8:11], ttmp4 glc slc
+	s_add_u32 m0, m0, 1
+	s_add_u32 ttmp4, ttmp4, 0x80
+	s_cmp_lt_u32 m0, ttmp15
+	s_cbranch_scc1 65528
+	s_branch 323
+	s_mov_b32 ttmp8, exec_lo
+	s_and_b32 ttmp9, exec_hi, 0xffff
+	s_or_b32 ttmp9, ttmp9, 0x40000
+	s_mov_b32 ttmp10, 0
+	s_mov_b32 ttmp11, 0x10807fac
+	s_getreg_b32 ttmp6, hwreg(28, 11, 1)
+	s_lshl_b32 ttmp6, ttmp6, 25
+	s_and_b32 ttmp2, exec_hi, 0x4000000
+	s_cbranch_scc0 57
+	s_mov_b32 exec_lo, -1
+	s_lshr_b32 m0, ttmp6, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 2
+	s_mov_b32 exec_hi, 0
+	s_branch 1
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp3, hwreg(HW_REG_LDS_ALLOC, 12, 9)
+	s_and_b32 ttmp3, ttmp3, -1
+	s_cbranch_scc0 46
+	s_lshl_b32 ttmp3, ttmp3, 8
+	s_mov_b32 ttmp10, ttmp3
+	s_getreg_b32 ttmp12, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp12, ttmp12, 1
+	s_bitcmp1_b32 ttmp6, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp12, ttmp12, 9
+	s_branch 1
+	s_lshl_b32 ttmp12, ttmp12, 10
+	s_getreg_b32 ttmp2, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp2, ttmp2, 10
+	s_add_u32 ttmp12, ttmp12, ttmp2
+	s_add_u32 ttmp12, ttmp12, 0x200
+	s_add_u32 ttmp12, ttmp12, 0x80
+	s_mov_b32 ttmp10, 0x1000000
+	s_lshr_b32 m0, ttmp6, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_mov_b32 m0, 0
+	s_cbranch_scc1 12
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp12
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	ds_store_addtid_b32 v0
+	s_add_u32 m0, m0, 0x80
+	s_add_u32 ttmp12, ttmp12, 0x80
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65525
+	s_branch 11
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp12
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	ds_store_addtid_b32 v0
+	s_add_u32 m0, m0, 0x100
+	s_add_u32 ttmp12, ttmp12, 0x100
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65525
+	s_mov_b32 ttmp12, 0
+	s_mov_b32 exec_lo, -1
+	s_lshr_b32 m0, ttmp6, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 2
+	s_mov_b32 exec_hi, 0
+	s_branch 1
+	s_mov_b32 exec_hi, -1
+	s_getreg_b32 ttmp3, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp3, ttmp3, 1
+	s_lshl_b32 ttmp3, ttmp3, 2
+	s_lshr_b32 m0, ttmp6, 25
+	s_and_b32 m0, m0, 1
+	s_cmp_eq_u32 m0, 1
+	s_cbranch_scc1 36
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 ttmp2, ttmp12
+	s_add_u32 ttmp12, ttmp12, 0x200
+	s_mov_b32 m0, 4
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc0 80
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp12 glc slc
+	buffer_load_b32 v1, off, ttmp[8:11], ttmp12 offset:128 glc slc
+	buffer_load_b32 v2, off, ttmp[8:11], ttmp12 offset:256 glc slc
+	buffer_load_b32 v3, off, ttmp[8:11], ttmp12 offset:384 glc slc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	v_movreld_b32_e32 v0, v0
+	v_movreld_b32_e32 v1, v1
+	v_movreld_b32_e32 v2, v2
+	v_movreld_b32_e32 v3, v3
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp12, ttmp12, 0x200
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65518
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp2 glc slc
+	buffer_load_b32 v1, off, ttmp[8:11], ttmp2 offset:128 glc slc
+	buffer_load_b32 v2, off, ttmp[8:11], ttmp2 offset:256 glc slc
+	buffer_load_b32 v3, off, ttmp[8:11], ttmp2 offset:384 glc slc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_branch 52
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 ttmp2, ttmp12
+	s_add_u32 ttmp12, ttmp12, 0x400
+	s_mov_b32 m0, 4
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc0 18
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp12 glc slc
+	buffer_load_b32 v1, off, ttmp[8:11], ttmp12 offset:256 glc slc
+	buffer_load_b32 v2, off, ttmp[8:11], ttmp12 offset:512 glc slc
+	buffer_load_b32 v3, off, ttmp[8:11], ttmp12 offset:768 glc slc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	v_movreld_b32_e32 v0, v0
+	v_movreld_b32_e32 v1, v1
+	v_movreld_b32_e32 v2, v2
+	v_movreld_b32_e32 v3, v3
+	s_add_u32 m0, m0, 4
+	s_add_u32 ttmp12, ttmp12, 0x400
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65518
+	s_getreg_b32 ttmp3, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_and_b32 ttmp3, ttmp3, -1
+	s_cbranch_scc0 14
+	s_lshl_b32 ttmp3, ttmp3, 3
+	s_add_u32 ttmp3, ttmp3, m0
+	s_mov_b32 exec_lo, -1
+	s_mov_b32 exec_hi, 0
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp12 glc slc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	v_movreld_b32_e32 v0, v0
+	s_add_u32 m0, m0, 1
+	s_add_u32 ttmp12, ttmp12, 0x80
+	s_cmp_lt_u32 m0, ttmp3
+	s_cbranch_scc1 65527
+	s_mov_b32 exec_hi, -1
+	buffer_load_b32 v0, off, ttmp[8:11], ttmp2 glc slc
+	buffer_load_b32 v1, off, ttmp[8:11], ttmp2 offset:256 glc slc
+	buffer_load_b32 v2, off, ttmp[8:11], ttmp2 offset:512 glc slc
+	buffer_load_b32 v3, off, ttmp[8:11], ttmp2 offset:768 glc slc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_getreg_b32 ttmp12, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp12, ttmp12, 1
+	s_bitcmp1_b32 ttmp6, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp12, ttmp12, 9
+	s_branch 1
+	s_lshl_b32 ttmp12, ttmp12, 10
+	s_getreg_b32 ttmp2, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp2, ttmp2, 10
+	s_add_u32 ttmp12, ttmp12, ttmp2
+	s_add_u32 ttmp12, ttmp12, 0x200
+	s_sub_u32 ttmp12, ttmp12, 0x50
+	s_mov_b32 ttmp10, 0x1000000
+	s_mov_b32 m0, 0x6c
+	s_sub_u32 ttmp12, ttmp12, 16
+	s_buffer_load_b128 s[0:3], ttmp[8:11], ttmp12 glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_sub_u32 m0, m0, 4
+	s_nop 0
+	s_movreld_b64 s[0:1], s[0:1]
+	s_movreld_b64 s[2:3], s[2:3]
+	s_sub_u32 ttmp12, ttmp12, 32
+	s_buffer_load_b256 s[0:7], ttmp[8:11], ttmp12 glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_sub_u32 m0, m0, 8
+	s_nop 0
+	s_movreld_b64 s[0:1], s[0:1]
+	s_movreld_b64 s[2:3], s[2:3]
+	s_movreld_b64 s[4:5], s[4:5]
+	s_movreld_b64 s[6:7], s[6:7]
+	s_sub_u32 ttmp12, ttmp12, 64
+	s_buffer_load_b512 s[0:15], ttmp[8:11], ttmp12 glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_sub_u32 m0, m0, 16
+	s_nop 0
+	s_movreld_b64 s[0:1], s[0:1]
+	s_movreld_b64 s[2:3], s[2:3]
+	s_movreld_b64 s[4:5], s[4:5]
+	s_movreld_b64 s[6:7], s[6:7]
+	s_movreld_b64 s[8:9], s[8:9]
+	s_movreld_b64 s[10:11], s[10:11]
+	s_movreld_b64 s[12:13], s[12:13]
+	s_movreld_b64 s[14:15], s[14:15]
+	s_cmp_eq_u32 m0, 0
+	s_cbranch_scc0 65520
+	s_setreg_imm32_b32 hwreg(HW_REG_MODE), 0
+	s_barrier
+	s_getreg_b32 ttmp12, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp12, ttmp12, 1
+	s_bitcmp1_b32 ttmp6, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp12, ttmp12, 9
+	s_branch 1
+	s_lshl_b32 ttmp12, ttmp12, 10
+	s_getreg_b32 ttmp2, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp2, ttmp2, 10
+	s_add_u32 ttmp12, ttmp12, ttmp2
+	s_add_u32 ttmp12, ttmp12, 0x200
+	s_mov_b32 ttmp10, 0x1000000
+	s_buffer_load_b32 ttmp3, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp0, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp1, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp4, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp5, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp14, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp15, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp13, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp7, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_buffer_load_b32 ttmp2, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_setreg_b32 hwreg(HW_REG_FLAT_SCR_LO), ttmp2
+	s_buffer_load_b32 ttmp2, ttmp[8:11], ttmp12 glc
+	s_add_u32 ttmp12, ttmp12, 4
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_setreg_b32 hwreg(HW_REG_FLAT_SCR_HI), ttmp2
+	s_mov_b32 m0, ttmp3
+	s_mov_b32 exec_lo, ttmp4
+	s_mov_b32 exec_hi, ttmp5
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 0, 10), ttmp15
+	s_lshr_b32 ttmp15, ttmp15, 11
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 11, 5), ttmp15
+	s_lshr_b32 ttmp15, ttmp15, 6
+	s_setreg_b32 hwreg(HW_REG_TRAPSTS, 17, 15), ttmp15
+	s_setreg_b32 hwreg(HW_REG_MODE), ttmp7
+	s_getreg_b32 ttmp2, hwreg(HW_REG_GPR_ALLOC, 12, 8)
+	s_add_u32 ttmp2, ttmp2, 1
+	s_bitcmp1_b32 ttmp6, 25
+	s_cbranch_scc1 2
+	s_lshl_b32 ttmp2, ttmp2, 9
+	s_branch 1
+	s_lshl_b32 ttmp2, ttmp2, 10
+	s_getreg_b32 ttmp3, hwreg(HW_REG_LDS_ALLOC, 24, 4)
+	s_lshl_b32 ttmp3, ttmp3, 10
+	s_add_u32 ttmp2, ttmp2, ttmp3
+	s_add_u32 ttmp2, ttmp2, 0x200
+	s_add_u32 ttmp2, ttmp2, ttmp8
+	s_addc_u32 ttmp3, ttmp9, 0
+	s_and_b32 ttmp3, ttmp3, 0xffff
+	s_load_b128 ttmp[4:7], ttmp[2:3], 0x50 glc
+	s_load_b128 ttmp[8:11], ttmp[2:3], 0x60 glc
+	s_load_b32 ttmp13, ttmp[2:3], 0x74 glc
+	s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
+	s_and_b32 ttmp1, ttmp1, 0xffff
+	s_and_b64 exec, exec, exec
+	s_and_b64 vcc, vcc, vcc
+	s_getreg_b32 ttmp2, hwreg(HW_REG_STATUS)
+	s_bitcmp1_b32 ttmp2, 6
+	s_cbranch_scc1 2
+	s_setreg_b32 hwreg(HW_REG_STATUS), ttmp14
+	s_setpc_b64 ttmp[0:1]
+	s_setreg_b32 hwreg(HW_REG_STATUS), ttmp14
+	s_rfe_b64 ttmp[0:1]
+	s_endpgm_saved
+	s_code_end
+	s_code_end
+	s_code_end
+	s_code_end
+	s_code_end

@@ -22,6 +22,7 @@ MI300X VF(gfx942)、ROCm DKMS `amdgpu 6.16.13`、运行内核 `6.8.0-124-generic
 | **`amdgpu-kfd-trap-handler-priv.md`** | **本目录主文档**。自伤 PC/EXEC 伪造为何无用;`SET_TRAP_HANDLER`(无 CAP)→ 二级 TBA → PRIV=1 执行的机制与利用形态 | ioctl 可达性已实测;PRIV gadget 执行未做 |
 | `amdgpu-kfd-F10-F13-exploitation.md` | F10/F13(CWSR 保存区寄存器伪造)单独利用面:故障合成、调试器伪造、MODE 篡改;PRIV 伪造的负面结果 | 实机(伪造+回读) |
 | `amdgpu-kfd-F10-F13-combinations.md` | F10/F13 配合 F14 / 调试 API:跨租户 wave 状态控制(触及+写入已证,执行影响受竞态限制) | 实机(触及+写入) |
+| `amdgpu-kfd-gfx11-priv.md` | **gfx11 分析**:GC 11.0.0–11.0.3 上 `trap_en=0` + SW_SA_TRAP → CWSR 抢占后**默认**保留 PRIV=1;自伤伪造 PC/STATUS 由此变可利用。比 gfx942 更严重 | blob+源码(无 gfx11 硬件) |
 
 > 关联但不在本目录的更广材料(可按需补入):`amdgpu-kfd-F14-*.md`(USERPTR→DOORBELL 跨租户显存原语
 > 及页表改写)、`amdgpu-kfd-findings-VERIFICATION.md`(原始 13 条 finding 的实机验证)。
@@ -48,6 +49,7 @@ MI300X VF(gfx942)、ROCm DKMS `amdgpu 6.16.13`、运行内核 `6.8.0-124-generic
 | 文件 | 说明 |
 |---|---|
 | `gfx9_4_3.dis` | 已发布 gfx942 CWSR/trap handler blob(`cwsr_trap_gfx9_4_3_hex`)反汇编。二级跳转 `s_setpc [*(TMA)]`(PRIV=1)、STATUS/MODE/TRAPSTS 恢复自保存区等结论的直接依据 |
+| `gfx11.dis` | 已发布 gfx11 blob(`cwsr_trap_gfx11_hex`)反汇编。675-678 行 = TRAP_EN 分支 + `s_setpc` 保留 PRIV=1;`amdgpu-kfd-gfx11-priv.md` 的直接依据 |
 
 ---
 
